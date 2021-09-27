@@ -1,8 +1,9 @@
-import type { Certificate, MultiHostRelayParams, PoolKey, PoolMetadataParams, PoolOwner, PoolRegistrationParams, PoolRewardAccount, Relay, SignedTransactionData, SingleHostHostnameRelayParams, Transaction, TxInput, TxOutput, Withdrawal } from "../../../src/Ada"
-import { StakeCredentialParamsType } from "../../../src/Ada"
+import type { Certificate, MultiHostRelayParams, PoolKey, PoolMetadataParams, PoolOwner, PoolRegistrationParams, PoolRewardAccount, Relay, SignedTransactionData, SingleHostHostnameRelayParams, Transaction, TxInput, TxOutput, Withdrawal, ErrorBase} from "../../../src/Ada"
+import { StakeCredentialParamsType, DeviceStatusError } from "../../../src/Ada"
 import { PoolKeyType, PoolRewardAccountType } from "../../../src/Ada"
 import { CertificateType, InvalidDataReason, Networks, PoolOwnerType, RelayType, TxOutputDestinationType, utils } from "../../../src/Ada"
 import { str_to_path } from "../../../src/utils/address"
+import type { BIP32Path} from '../../../src/types/public'
 
 export const inputs: Record<
   | 'utxoNoPath'
@@ -689,6 +690,27 @@ export const poolRegistrationOwnerTestcases: Testcase[] = [
             ],
             auxiliaryDataSupplement: null,
         },
+    },
+]
+
+export type RejectTestcase = {
+    testname: string,
+    tx: Transaction,
+    additionalWitnessPaths: BIP32Path[],
+    errCls: new (...args: any[]) => ErrorBase,
+    errMsg: string,
+}
+
+export const poolRegistrationOwnerRejectTestcases: RejectTestcase[] = [
+    {
+        testname: "Witness valid multiple mixed owners all relays pool registration with additional witnesses",
+        tx: {
+            ...txBase,
+            certificates: [certificates.poolRegistrationMixedOwnersAllRelays],
+        },
+        additionalWitnessPaths: [str_to_path("1852'/1815'/0'/2/0"), str_to_path("1852'/1815'/0'/2/1"), str_to_path("1854'/1815'/0'/2/0")],
+        errCls: DeviceStatusError,
+        errMsg: "Action rejected by Ledger's security policy",
     },
 ]
 

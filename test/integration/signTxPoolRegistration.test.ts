@@ -5,7 +5,7 @@ import type Ada from "../../src/Ada"
 import type { Certificate, Transaction } from "../../src/Ada"
 import { CertificateType, InvalidDataReason, TransactionSigningMode } from "../../src/Ada"
 import { getAda, Networks } from "../test_utils"
-import type { Testcase } from "./__fixtures__/signTxPoolRegistration"
+import type { Testcase, RejectTestcase } from "./__fixtures__/signTxPoolRegistration"
 import {
     certificates,
     defaultPoolRegistration,
@@ -16,6 +16,7 @@ import {
     outputs,
     poolRegistrationOperatorTestcases,
     poolRegistrationOwnerTestcases,
+    poolRegistrationOwnerRejectTestcases,
     withdrawals,
 } from "./__fixtures__/signTxPoolRegistration"
 chai.use(chaiAsPromised)
@@ -45,6 +46,30 @@ describe("signTxPoolRegistrationOKOwner", async () => {
     }
 
     test(poolRegistrationOwnerTestcases, TransactionSigningMode.POOL_REGISTRATION_AS_OWNER)
+})
+
+describe("signTxPoolRegistrationNotOKOwner", async () => {
+    let ada: Ada = {} as Ada
+
+    beforeEach(async () => {
+        ada = await getAda()
+    })
+
+    afterEach(async () => {
+        await (ada as any).t.close()
+    })
+
+    const signingMode: TransactionSigningMode = TransactionSigningMode.POOL_REGISTRATION_AS_OWNER
+    for (const {testname, tx, additionalWitnessPaths, errCls, errMsg } of poolRegistrationOwnerRejectTestcases) {
+        it(testname, async() => {
+            const response = ada.signTransaction({
+                signingMode,
+                tx,
+                additionalWitnessPaths,
+            })
+            await expect(response).to.be.rejectedWith(errCls, errMsg)
+        })
+    }
 })
 
 describe("signTxPoolRegistrationOKOperator", async () => {
