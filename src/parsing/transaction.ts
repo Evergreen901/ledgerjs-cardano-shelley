@@ -227,7 +227,7 @@ export function parseSigningMode(mode: TransactionSigningMode): TransactionSigni
     case TransactionSigningMode.ORDINARY_TRANSACTION:
     case TransactionSigningMode.POOL_REGISTRATION_AS_OWNER:
     case TransactionSigningMode.POOL_REGISTRATION_AS_OPERATOR:
-    case TransactionSigningMode.SCRIPT_TRANSACTION:
+    case TransactionSigningMode.MULTISIG_TRANSACTION:
         return mode
     default:
         throw new InvalidData(InvalidDataReason.SIGN_MODE_UNKNOWN)
@@ -270,7 +270,7 @@ export function parseSignTransactionRequest(request: SignTransactionRequest): Pa
         break
     }
 
-    case TransactionSigningMode.SCRIPT_TRANSACTION: {
+    case TransactionSigningMode.MULTISIG_TRANSACTION: {
         // pool registrations have separate signing modes
         validate(
             tx.certificates.every(certificate => certificate.type !== CertificateType.STAKE_POOL_REGISTRATION),

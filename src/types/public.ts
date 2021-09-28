@@ -817,9 +817,9 @@ export type DeviceCompatibility = {
      */
     supportsNativeScriptHashDerivation: boolean
     /**
-     * Whether we support script transaction
+     * Whether we support multisig transaction
      */
-    supportsScriptTransaction: boolean
+    supportsMultisigTransaction: boolean
     /**
      * Whether we support mint
      */
@@ -1140,7 +1140,7 @@ export enum TransactionSigningMode {
      * The API witnesses
      * - all given in [[SignTransactionRequest.additionalWitnessPaths]]
      */
-    SCRIPT_TRANSACTION = 'multisig_transaction',
+    MULTISIG_TRANSACTION = 'multisig_transaction',
 }
 
 /**
