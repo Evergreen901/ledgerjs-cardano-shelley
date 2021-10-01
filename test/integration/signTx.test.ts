@@ -11,6 +11,7 @@ import {
     testsShelleyNoCertificates,
     testsShelleyRejects,
     testsShelleyWithCertificates,
+    testsShelleyRejects,
 } from "./__fixtures__/signTx"
 
 // ========================================   BYRON   ========================================
