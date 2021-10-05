@@ -1065,6 +1065,10 @@ export type Transaction = {
      * Script Data hash (if any)
      */
     scriptDataHashHex?: string | null,
+    /**
+     * Collaterals (if any)
+     */
+    collaterals?: Array<TxInput> | null,
 }
 
 /**
