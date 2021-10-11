@@ -1002,6 +1002,20 @@ export type CatalystRegistrationParams = {
     nonce: bigint_like,
 }
 
+export enum TxRequiredSignerType {
+    /** Required Signer is supplied as key path or hash value */
+    PATH = 'required_signer_path',
+    HASH = 'required_signer_hash',
+}
+
+export type RequiredSigner = {
+    type: TxRequiredSignerType.PATH,
+    path: BIP32Path,
+} | {
+    type: TxRequiredSignerType.HASH,
+    hash: string,
+}
+
 /**
  * Represents transaction to be signed by the device.
  * Note that this represents a *superset* of what Ledger can sign due to certain hardware app/security limitations.
@@ -1072,7 +1086,7 @@ export type Transaction = {
     /**
      * Required Signers by key (if any)
      */
-    requiredSigners?: Array<string> | null,
+    requiredSigners?: Array<RequiredSigner> | null,
 }
 
 /**
