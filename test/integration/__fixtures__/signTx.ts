@@ -1462,6 +1462,49 @@ export const testsShelleyRejects: TestcaseRejectShelley[] = [
         errMsg: "Action rejected by Ledger's security policy",
         rejectReason: InvalidDataReason.OUTPUT_INVALID_ADDRESS_PARAMS,
     },
+    {
+        testname: "Reject tx mismatching account numbers - change vs withdrawal",
+        tx: {
+            ...shelleyBase,
+            outputs: [outputs.internalBaseWithStakingKeyHash],
+            withdrawals: [{
+                stakeCredential: {
+                    type: StakeCredentialParamsType.KEY_PATH,
+                    keyPath: str_to_path("1852'/1815'/1'/2/0"),
+                },
+                amount: 5,
+            }],
+        },
+        signingMode: TransactionSigningMode.ORDINARY_TRANSACTION,
+        errCls: DeviceStatusError,
+        errMsg: "Action rejected by Ledger's security policy",
+        rejectReason: InvalidDataReason.LEDGER_POLICY,
+    },
+    {
+        testname: "Reject tx mismatching account numbers - byron vs shelley",
+        tx: {
+            ...shelleyBase,
+            outputs: [{
+                amount: 7120787,
+                destination: {
+                    type: TxOutputDestinationType.DEVICE_OWNED,
+                    params: {
+                        type: AddressType.BASE_PAYMENT_KEY_STAKE_KEY,
+                        params: {
+                            spendingPath: str_to_path("1852'/1815'/1'/0/0"),
+                            stakingKeyHashHex:
+                      "122a946b9ad3d2ddf029d3a828f0468aece76895f15c9efbd69b4277",
+                        },
+                    },
+                }
+            }],
+        },
+        additionalWitnessPaths: [str_to_path("44'/1815'/1'/0/0")],
+        signingMode: TransactionSigningMode.ORDINARY_TRANSACTION,
+        errCls: DeviceStatusError,
+        errMsg: "Action rejected by Ledger's security policy",
+        rejectReason: InvalidDataReason.LEDGER_POLICY,
+    },
 ]
   
 
