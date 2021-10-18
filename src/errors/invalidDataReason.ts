@@ -181,6 +181,11 @@ export enum InvalidDataReason {
   SIGN_MODE_POOL_OPERATOR__WITHDRAWALS_NOT_ALLOWED =
   "no withdrawals allowed in TransactionSigningMode.POOL_REGISTRATION_AS_OPERATOR",
 
+  SIGN_MODE_PLUTUS__DEVICE_OWNED_ADDRESS_NOT_ALLOWED =
+  "outputs given by path are not allowed in TransactionSigningMode.PLUTUS_TRANSACTION",
+  SIGN_MODE_PLUTUS__POOL_REGISTRATION_NOT_ALLOWED =
+  "pool registration is not allowed in TransactionSigningMode.PLUTUS_TRANSACTION",
+
   OPERATIONAL_CERTIFICATE_INVALID_KES_KEY =
   "invalid operational certificate kes key",
   OPERATIONAL_CERTIFICATE_INVALID_KES_PERIOD =
